@@ -13,7 +13,7 @@ group :development, :test do
   gem 'sqlite3', '1.3.13'
   gem 'byebug',  '9.0.6', platform: :mri
   gem "rspec-rails"
-  gem "factory_girl_rails"
+  gem "factory_bot_rails"
   gem "guard-rspec"
 end
 
