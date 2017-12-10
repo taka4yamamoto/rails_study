@@ -1,0 +1,4 @@
+AllCops:
+  TargetRailsVersion: 5.1.2
+  Exclude:
+    - 'vendor/**/*'
