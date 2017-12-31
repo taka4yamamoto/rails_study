@@ -5,6 +5,16 @@ RSpec.describe StaticPagesController, type: :controller do
 
   let(:base_title) { 'Ruby on Rails Tutorial Sample App' }
 
+  # root へのアクセス方法がわからない・・・
+  # controller のテストの範囲外か？
+  describe "GET #root" do
+    xit "returns http success" do
+      get root_url
+      expect(response).to have_http_status(:success)
+      assert_select "title", "Home | #{base_title}"
+    end
+  end
+
   describe "GET #home" do
     it "returns http success" do
       get :home
