@@ -23,5 +23,15 @@ RSpec.describe User, type: :model do
       let(:user) { build(:user, name: 'Name', email: 'email@example.com') }
       it { is_expected.to be true }
     end
+
+    context 'user has invalid name' do
+      let(:user) { build(:user, :email, name: 'a' * 51) }
+      it { is_expected.to be false }
+    end
+
+    context 'user has invalid email' do
+      let(:user) { build(:user, :name, email: 'a' * 244 + '@example.com') }
+      it { is_expected.to be false }
+    end
   end
 end
