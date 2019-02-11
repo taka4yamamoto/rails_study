@@ -1,5 +1,8 @@
 FactoryBot.define do
   factory :user do
+    name { 'Name' }
+    sequence(:email) { |n| "email_#{n}@ymtk.com" }
+
     trait :name do
       name { 'Name' }
     end
