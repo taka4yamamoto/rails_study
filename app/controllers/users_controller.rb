@@ -9,4 +9,9 @@ class UsersController < ApplicationController
 
   def new
   end
+
+  def create
+    @user = User.create(name: params[:name], email: params[:email])
+    render json: @user
+  end
 end
