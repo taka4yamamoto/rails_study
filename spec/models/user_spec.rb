@@ -34,4 +34,38 @@ RSpec.describe User, type: :model do
       it { is_expected.to be false }
     end
   end
+
+  describe 'following' do
+    subject { user.following }
+    let(:user) { create(:user) }
+
+    context 'follow no user' do
+      it { is_expected.to be_empty }
+      it { expect(subject.count).to eq 0 }
+    end
+
+    context 'follow 1 user' do
+      let(:another_user) { create(:user) }
+      let!(:user_follow) { create(:relationship, follower_id: user.id, followed_id: another_user.id) }
+      it { is_expected.to eq [another_user] }
+      it { expect(subject.count).to eq 1 }
+    end
+  end
+
+  describe 'followers' do
+    subject { user.followers }
+    let(:user) { create(:user) }
+
+    context 'no follower' do
+      it { is_expected.to be_empty }
+      it { expect(subject.count).to eq 0 }
+    end
+
+    context '1 follower' do
+      let(:another_user) { create(:user) }
+      let!(:another_user_follow) { create(:relationship, follower_id: another_user.id, followed_id: user.id) }
+      it { is_expected.to eq [another_user] }
+      it { expect(subject.count).to eq 1 }
+    end
+  end
 end
