@@ -146,4 +146,43 @@ RSpec.describe UsersController, type: :request do
       end
     end
   end
+
+  describe 'GET /users/:id/followers' do
+    subject { get path }
+    let(:path) { "/users/#{user.id}/followers" }
+    let(:user) { create(:user) }
+
+    context 'no follower' do
+      it do
+        is_expected.to eq 200
+        response_json = JSON.parse(response.body)
+        expect(response_json.length).to eq 0
+      end
+    end
+
+    context '1 follower' do
+      let(:another_user) { create(:user) }
+      let!(:another_user_follow) { create(:relationship, follower_id: another_user.id, followed_id: user.id) }
+
+      it do
+        is_expected.to eq 200
+        response_json = JSON.parse(response.body)
+        expect(response_json.length).to eq 1
+      end
+    end
+
+    context '2 followers' do
+      let!(:other_users) {
+        create_list(:user, 2).each do |another_user|
+          create(:relationship, follower_id: another_user.id, followed_id: user.id)
+        end
+      }
+
+      it do
+        is_expected.to eq 200
+        response_json = JSON.parse(response.body)
+        expect(response_json.length).to eq 2
+      end
+    end
+  end
 end
