@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:following]
+  before_action :set_user, only: [:following, :followers]
 
   def index
     render json: User.all
@@ -19,6 +19,10 @@ class UsersController < ApplicationController
 
   def following
     render json: @user.following
+  end
+
+  def followers
+    render json: @user.followers
   end
 
   private
