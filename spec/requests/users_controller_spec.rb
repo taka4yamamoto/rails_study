@@ -185,4 +185,48 @@ RSpec.describe UsersController, type: :request do
       end
     end
   end
+
+  describe 'shared_context を利用した例' do
+    subject { get path }
+    let(:path) { "/users/#{user.id}/followers" }
+    let(:user) { create(:user) }
+
+    context 'test case A' do
+      let(:user) { create(:user) }
+      let(:another_user) { create(:user) }
+      let!(:another_user_follow) { create(:relationship, follower_id: another_user.id, followed_id: user.id) }
+
+      it { is_expected.to eq 200 }
+    end
+
+    context 'test case B' do
+      let(:user) { create(:user) }
+      let(:another_user) { create(:user) }
+      let!(:another_user_follow) { create(:relationship, follower_id: another_user.id, followed_id: user.id) }
+
+      # (他の条件)
+
+      it { is_expected.to eq 200 }
+    end
+
+    shared_context 'followed_user' do
+      let(:user) { create(:user) }
+      let(:another_user) { create(:user) }
+      let!(:user_follow) { create(:relationship, follower_id: another_user.id, followed_id: user.id) }
+    end
+
+    context 'test case A' do
+      include_context 'followed_user'
+
+      it { is_expected.to eq 200 }
+    end
+
+    context 'test case B' do
+      include_context 'followed_user'
+
+      # (他の条件)
+
+      it { is_expected.to eq 200 }
+    end
+  end
 end
